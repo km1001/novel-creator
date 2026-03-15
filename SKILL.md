@@ -1,13 +1,16 @@
 ---
 name: novel-creator
-description: |
-  根据用户的想法或大纲，创作连贯的高质量长篇中文小说。
-  支持两种模式：(1)网文模式（爽文/修仙/系统流，快节奏打脸升级）；(2)文学模式（悬疑/科幻/现实，重度润色去AI痕迹）。
+description: 根据用户的想法或大纲，创作连贯的高质量长篇中文小说。
+  支持两种模式：
+  1. 网文模式（爽文/修仙/系统流，快节奏打脸升级）
+  2. 文学模式（悬疑/科幻/现实，重度润色去AI痕迹）。
   通过 memory/ 记忆系统（包含角色、地点、情节点、世界观、伏笔暗线、物品）确保长篇故事的连续性和逻辑性。
   当用户要求：写小说、创作故事、分章节写作、连续剧情、长篇小说、爽文时使用。
 metadata:
-  version: "1.0.0"
+  author: km1001
+  version: "1.0.1"
   language: zh-CN
+  category: creative-writing
   license: "MIT"
   requires: ["deep-research", "humanizer-zh"]
   tags: "novel, fiction, creative-writing, chinese, 小说生成"
