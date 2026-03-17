@@ -38,8 +38,8 @@ metadata:
 开始写正文前，必须先学习指定题材的文风笔触。
 
 优先读取：
-- `examples/[题材].md`
-- 必要时再读取 `references/小说经典片段赏析_[题材].md`
+- `examples/` 中对应题材文件，如 `examples/青春校园.md`
+- 必要时再读取 `references/` 中对应题材赏析文件，如 `references/小说经典片段赏析_青春校园.md`
 
 预热后必须把结论写入：
 - `plan/style_guide.md`
@@ -47,7 +47,7 @@ metadata:
 后续每次开写章节前，都优先读取：
 - `plan/current_unit.md`
 - `plan/style_guide.md`
-- 当前章节必要的 `memory/*.md`
+- 当前章节必要的 `memory/` 文件，如 `memory/roles.md`、`memory/plot_points.md`
 
 ### 3. 保真高于炫技
 除非用户明确要求改剧情，否则：
@@ -102,7 +102,7 @@ metadata:
 
 处理方式：
 1. 检测已有工作区
-2. 读取 `current_unit`、`style_guide`、必要记忆
+2. 读取 `plan/current_unit.md`、`plan/style_guide.md` 与必要记忆文件
 3. 确认上章结尾与本章任务
 4. 直接续写
 
@@ -113,7 +113,7 @@ metadata:
 
 处理方式：
 1. 先识别现有问题类型
-2. 重建 `outline/current_arc/current_unit`
+2. 重建 `plan/outline.md`、`plan/current_arc.md`、`plan/current_unit.md`
 3. 必要时修复 `memory/`
 4. 再决定是重写样章还是继续往后写
 
@@ -164,11 +164,11 @@ metadata:
 在写正文前先学会指定类型小说的笔触，而不是边写边猜。
 
 ### 操作
-1. 读取 `examples/[题材].md`
-2. 如果题材复杂或用户要求更强风格，再读取 `references/小说经典片段赏析_[题材].md`
+1. 读取 `examples/` 中对应题材文件，如 `examples/青春校园.md`
+2. 如果题材复杂或用户要求更强风格，再读取 `references/` 中对应题材赏析文件，如 `references/小说经典片段赏析_青春校园.md`
 3. 提炼并写入 `plan/style_guide.md`
 
-### `style_guide.md` 必须包含
+### `plan/style_guide.md` 必须包含
 - 题材
 - 叙事温度
 - 推荐视角
@@ -187,6 +187,7 @@ metadata:
 ## 阶段 2：初始化
 
 初始化不再只有一种重模式。
+以下条目均为**初始化后生成的工作区文件**，首次运行前可能不存在。
 
 ### 最小初始化
 适用于快速开写：
@@ -224,15 +225,15 @@ metadata:
 ## 阶段 3：结构构建
 
 ### 新建项目
-根据需求生成：
+根据需求生成工作区文件：
 - `plan/outline.md`
 - `plan/current_arc.md`（若是长篇或全量模式）
 - `plan/current_unit.md`
-- 基础 `memory/*.md`
+- 基础 `memory/` 文件，如 `memory/roles.md`、`memory/plot_points.md`
 
 要求：
-- 在 `current_arc.md` 中明确写出“**这个篇章存在的意义**”
-- 在 `current_unit.md` 中明确写出“**这个单元存在的意义**”
+- 在 `plan/current_arc.md` 中明确写出“**这个篇章存在的意义**”
+- 在 `plan/current_unit.md` 中明确写出“**这个单元存在的意义**”
 - 在单元内每一章的规划里补出“**这一章存在的意义**”
 
 ### 续写项目
@@ -246,7 +247,7 @@ metadata:
 优先做三件事：
 1. 抽取已有剧情事实
 2. 回填 `memory/plot_points.md` 与 `memory/roles.md`
-3. 重写 `current_unit.md`，恢复最近几章的推进秩序
+3. 重写 `plan/current_unit.md`，恢复最近几章的推进秩序
 
 救稿时尤其要补足：
 - 这个篇章为什么必须存在
@@ -259,7 +260,7 @@ metadata:
 1. `plan/current_unit.md`
 2. `plan/style_guide.md`
 3. `plan/current_arc.md`（如存在）
-4. 必要的 `memory/*.md`
+4. 必要的 `memory/` 文件，如 `memory/roles.md`、`memory/plot_points.md`
 5. 上一章结尾
 
 ### 章节写作规则
@@ -279,7 +280,7 @@ metadata:
 ## 阶段 5：保存与更新
 
 章节完成后按顺序执行：
-1. 保存正文到 `output/第xx章_章节名.md`
+1. 保存正文到 `output/`，文件名格式为 `第xx章_章节名.md`
 2. 更新 `plan/outline.md`
 3. 更新 `plan/current_unit.md`
 4. 必要时更新 `plan/current_arc.md`
@@ -311,35 +312,37 @@ metadata:
 ## `plan/` 设计
 
 `plan/` 用来控制宏观到微观的写作路线。
+以下条目均为初始化后生成的工作区文件。
 
 | 文件 | 作用 | 读取优先级 |
 |---|---|---|
-| `current_unit.md` | 最近 3-5 章的具体推进，并说明每章/每单元存在的意义 | 最高 |
-| `style_guide.md` | 当前作品的文风笔触卡 | 最高 |
-| `current_arc.md` | 当前卷 / 当前阶段目标，并说明该篇章存在的意义 | 高 |
-| `outline.md` | 全书长线规划 | 中 |
+| `plan/current_unit.md` | 最近 3-5 章的具体推进，并说明每章/每单元存在的意义 | 最高 |
+| `plan/style_guide.md` | 当前作品的文风笔触卡 | 最高 |
+| `plan/current_arc.md` | 当前卷 / 当前阶段目标，并说明该篇章存在的意义 | 高 |
+| `plan/outline.md` | 全书长线规划 | 中 |
 
 ### 读取原则
-- 写章节时，优先读 `current_unit + style_guide`
-- 卡文、换卷、修大纲时，再重读 `outline`
+- 写章节时，优先读 `plan/current_unit.md` + `plan/style_guide.md`
+- 卡文、换卷、修大纲时，再重读 `plan/outline.md`
 
 ---
 
 ## `memory/` 设计
 
 `memory/` 用来记录已经发生的客观事实。
+以下条目均为初始化后生成的工作区文件。
 
 所有表格型记忆都应带状态列，便于按需检索和过滤。
 
 | 文件 | 作用 |
 |---|---|
-| `roles.md` | 角色状态与关系；至少记录性别，非现实题材额外记录种族/物种 |
-| `locations.md` | 地点与场景 |
-| `plot_points.md` | 已发生关键事件 |
-| `story_bible.md` | 世界观、规则、等级体系 |
-| `errors.md` | 穿帮与修正记录 |
-| `foreshadowing.md` | 伏笔与回收状态 |
-| `items.md` | 关键物品和线索流转 |
+| `memory/roles.md` | 角色状态与关系；至少记录性别，非现实题材额外记录种族/物种 |
+| `memory/locations.md` | 地点与场景 |
+| `memory/plot_points.md` | 已发生关键事件 |
+| `memory/story_bible.md` | 世界观、规则、等级体系 |
+| `memory/errors.md` | 穿帮与修正记录 |
+| `memory/foreshadowing.md` | 伏笔与回收状态 |
+| `memory/items.md` | 关键物品和线索流转 |
 
 ### 检索原则
 - 只读取与当前章节相关、且状态有效的条目
@@ -378,12 +381,12 @@ metadata:
 - 先给样章，再补设定
 
 ### 如果文风不稳
-- 回到 `style_guide.md`
+- 回到 `plan/style_guide.md`
 - 重新做一次文风预热
 
 ### 如果剧情跑偏
-- 先修 `current_unit.md`
-- 再修相关 `memory/*.md`
+- 先修 `plan/current_unit.md`
+- 再修相关 `memory/` 文件
 - 不要直接硬写下一章
 
 ### 如果项目太旧太乱
@@ -406,8 +409,8 @@ metadata:
 - `references/quality-checklist.md`
 
 文风预热优先读取：
-- `examples/[题材].md`
-- `references/小说经典片段赏析_[题材].md`
+- `examples/` 中对应题材文件，如 `examples/青春校园.md`
+- `references/` 中对应题材赏析文件，如 `references/小说经典片段赏析_青春校园.md`
 
 脚本：
 - `scripts/init-novel.ps1`
