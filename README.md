@@ -1,106 +1,158 @@
 <div align="center">
-   
-# 🎭 novel-creator skill
 
-### 你的个人智能长篇小说创作引擎
+# 🎭 novel-creator 2.0
 
-融合智能大纲规划、深度全网调研平台与严谨持续记忆系统的小说创作助理。
+### 先学文风，再写长篇
+
+轻主控、强记忆、可连载的中文小说创作总控台。
 
 </div>
 
 ---
 
-## ✨ 核心特性
+## ✨ 2.0 核心升级
 
-- **网文/文学双模式**
-  - **文学模式**：悬疑/现实等题材。5问精细引导，重情绪渲染，极大降低AI文字痕迹，每章3000-5000字。
-  - **网文模式**：系统/修仙等爽文。提示词自动完善，强化爽点与打脸节奏，每章2000-3000字。
-- **强制的 `memory` 记忆管理**：七大文件(`roles` / `locations` / `plot_points` / `story_bible` / `errors` / `foreshadowing` / `items`)保驾护航，人设备忘不崩坏，暗线伏笔不烂尾。
-- **深度全网调研 (deep-research)**：开篇前自动分析市面同类爆款题材的流行写法套路，提供 2-5 种参考架构给用户精选。
-- **内置大量小说写作指南与经典模板**：好不仅是对情节好，对话、悬念、场面描写均包含具体指南。
+- **四种工作模式**
+  - **快速开写**：先出样章，再补设定
+  - **标准建书**：完整建档、规划卷纲、进入连载
+  - **继续连载**：读取现有 `plan/` 与 `memory/` 直接续写
+  - **救稿重构**：从已有稿件反推结构，修复大纲与记忆
 
-## 🚀 快速开始
+- **正式加入“文风预热阶段”**
+  - 写正文前先读取指定题材样本
+  - 自动提炼语感、句式、对白、意象和禁忌写法
+  - 生成 `plan/style_guide.md` 作为后续章节的固定文风卡
 
-1. **直接召唤 AI 并发送指令**：
-   ```
-   帮我用 novel-creator 创作一部小说
-   ```
+- **轻量主控 + 技能解耦**
+  - `novel-creator` 负责规划、记忆、节奏与连贯性
+  - `novel-humanizer` 负责小说去 AI
+  - `novel-write-style` 负责强化指定题材笔触
+  - `deep-research` 仅在需要市场/平台趋势时启用
 
-2. **阶段零：环境检测与续写判定**
-   - AI 启动后会立刻检测当前目录是否已有以前的创作设定（即是否存在 `memory/`）。
-   - 如果有记录，将询问你是否**继续创作**，或者推翻**开一本新书**。
-
-3. **阶段一：需求调研与双模式确认**
-   - **大纲采集**：如果有明确大纲，直接扔给 AI；如果没有，AI 会进行经典的"5问循序引导"。
-   - **全网调研**：AI 会自动查阅相关最爆款写作流派（借助 `deep-research`）。
-   - **风格选定**：你决定到底走**网文模式**，还是**文学模式**。
-
-4. **阶段二：智能梳理与《大纲》《角色/物品档案》生成**
-   在开始疯狂码字前，AI 会建立 `output` 和 `memory` 目录，生成全书框架大纲、记录初始人设、设定核心悬念和底层逻辑，向你做最后确认。
-
-5. **阶段三：创作节奏选择与逐章发生**
-   你可以告诉 AI 是**先写一章试试看**、**连写X章后停下看反馈**，还是**直接全自动爆更到完结**。在整个修改反馈期间，如果你改变了主线走向或某位角色的生死，AI 都会主动更新 `memory` 中的全书设定。
+- **更安全的初始化**
+  - 支持 `minimal` / `full` 两种初始化模式
+  - 清空旧项目时先自动备份
+  - 新增 `manifest.json` 记录项目状态
 
 ---
 
-## 📂 结构与资源使用
+## 🚀 适合什么场景
 
-```
+- “帮我开一本悬疑长篇”
+- “先写一章样章试试”
+- “继续写第 12 章”
+- “这本书写崩了，帮我重整大纲”
+- “写之前先学一下这个题材的文风”
+
+---
+
+## 📂 目录结构
+
+```text
 novel-creator/
-├── SKILL.md                 # 核心技能逻辑
+├── SKILL.md
 ├── README.md
+├── assets/
+│   ├── chapter-template.md
+│   ├── memory-template.md
+│   ├── plan-template.md
+│   ├── PROMPT-TEMPLATE.md
+│   └── style-guide-template.md
+├── examples/
+├── references/
+├── scripts/
+│   ├── init-novel.ps1
+│   ├── init-novel.sh
+│   └── check_chapter_wordcount.py
+```
 
-├── references/              # AI写作大脑（10份方法论集大成者）
-│   ├── chapter-guide.md     # 10种强力开场技巧与结构
-│   ├── consistency.md       # 连贯性保证机制
-│   ├── content-expansion.md # 7种水字数/扩充场景技巧
-│   ├── dialogue-writing.md  # 摆脱AI冰冷对话指南
-│   ├── ...
+运行后会在工作区生成：
 
-├── assets/                  # 各类初始系统模板与报告框架
-│   ├── chapter-template.md  # 有针对战斗/高潮反转/突破的专用模板
-│   ├── outline-template.md  # 全书大纲脉络
-│   ├── memory-template.md   # 7大记忆库雏形
-│   └── ...
-
-├── scripts/                 # 工具箱
-│   ├── init-novel.sh        # Mac/Linux 一键建档空工作区脚本
-│   ├── init-novel.ps1       # Windows 一键建档空工作区脚本
-│   └── check_chapter_wordcount.py # 去除Markdown标签的真空汉字计数器
-
-└── plan/                    # 计划系统，宏观与微观剧情推进
-    ├── outline.md           # 全书总大纲与规划
-    ├── current_arc.md       # 大阶段剧集模块
-    ├── current_unit.md      # 最小剧集单元
-
-└── memory/                  # 运行过程中自动推演更新的记忆系统
-    ├── roles.md             # 角色档案
-    ├── locations.md         # 地点档案
-    ├── plot_points.md       # 情节关键节点日志
-    ├── story_bible.md       # 底层世界观与设定集
-    ├── errors.md            # 断层/穿帮错题本
-    ├── foreshadowing.md     # 伏笔与暗线填坑督导表
-    └── items.md             # 关键物品与线索流转账本
+```text
+output/
+plan/
+memory/
+manifest.json
+backup/
 ```
 
 ---
 
-## 🛠️ 安装
+## 🧭 2.0 工作流
 
-将此整个目录放入 AI Agent 工具支持技能的指定 `skills` 目录（例如 `~/.claude/skills/novel-creator/` 或者 `~/.agents/skills/novel-creator/` ）。
+### 1. 分流任务
+- 新建
+- 续写
+- 救稿
+- 样章
 
-*注意: 需同时安装并开启 `deep-research` (用于最新题材智能调研) 和 `humanizer-zh` (用于深度去AI味润色) 技能。*
+### 2. 最小确认
+优先只确认：
+- 题材
+- 模式（网文 / 文学）
+- 当前任务
+- 生成节奏
+- 是否需要市场调研
+
+### 3. 文风预热
+写之前先读：
+- `examples/[题材].md`
+- 必要时 `references/小说经典片段赏析_[题材].md`
+
+然后生成：
+- `plan/style_guide.md`
+
+### 4. 初始化
+- `minimal`：适合样章、快速试写
+- `full`：适合正式建书、长期连载
+
+### 5. 逐章创作
+每次优先读取：
+- `plan/current_unit.md`
+- `plan/style_guide.md`
+- 必要的 `memory/*.md`
+
+### 6. 章节完成后
+- 保存正文
+- 更新 `plan/`
+- 更新 `memory/`
+- 跑字数检查脚本
 
 ---
 
-## 🤝 鸣谢与许可
+## 🛠️ 初始化脚本
 
-本项目是对以下两个优秀的开源 Agent Skill 的合并与深度定制升级版本：
-- **[chinese-novelist](https://github.com/penglonghuang/chinese-novelist-skill)** (MIT License)
-- **[novel-generator](https://clawhub.ai/ITYHG/novel-generator)** (MIT License)
+### PowerShell
 
-感谢原作者们的卓越贡献！
+```powershell
+./scripts/init-novel.ps1 "夜航档案" -Mode minimal
+./scripts/init-novel.ps1 "夜航档案" -Mode full
+./scripts/init-novel.ps1 "夜航档案" -Mode full -Clean
+```
 
-### ⚖️ 许可证
+### Bash
 
-本项目遵循 **MIT License**。您可以自由地使用、修改和分发。
+```bash
+./scripts/init-novel.sh "夜航档案" --mode minimal
+./scripts/init-novel.sh "夜航档案" --mode full
+./scripts/init-novel.sh "夜航档案" --mode full --clean
+```
+
+---
+
+## 🤝 配套技能
+
+推荐一起使用：
+
+- `novel-humanizer`
+  - 小说去 AI、人味化、对白修正、心理毛边
+- `novel-write-style`
+  - 强化悬疑 / 校园 / 仙侠 / 爽文等题材笔触
+- `deep-research`
+  - 仅在你要研究平台风向、爆款套路时使用
+
+---
+
+## ⚖️ 许可证
+
+本项目遵循 **MIT License**。
