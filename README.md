@@ -25,8 +25,7 @@
 
 - **轻量主控 + 技能解耦**
   - `novel-creator` 负责规划、记忆、节奏与连贯性
-  - `novel-humanizer` 负责小说去 AI
-  - `novel-write-style` 负责强化指定题材笔触
+  - `novel-write-style` 负责按题材去 AI、统一小说语感、强化题材笔触
   - `deep-research` 仅在需要市场/平台趋势时启用
 
 - **更安全的初始化**
@@ -144,10 +143,8 @@ backup/
 
 推荐一起使用：
 
-- `novel-humanizer`
-  - 小说去 AI、人味化、对白修正、心理毛边
 - `novel-write-style`
-  - 强化悬疑 / 校园 / 仙侠 / 爽文等题材笔触
+  - 按题材去 AI、人味化、对白修正、心理毛边、题材笔触校准
 - `deep-research`
   - 仅在你要研究平台风向、爆款套路时使用
 

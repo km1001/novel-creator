@@ -1,13 +1,13 @@
 ---
 name: novel-creator
-description: 为中文长篇小说、连载网文、章节样稿、已有草稿续写提供一套完整的创作总控流程：分流新建/续写/救稿任务，维护 plan/ 与 memory/ 记忆系统，在写正文前先学习指定题材的文风笔触，再按节奏持续产出章节。适用于用户要求写小说、开书、搭大纲、出样章、分章节连载、继续写下一章、修大纲救稿、想让 AI 先学某个题材的文风再开写时。默认负责规划与连贯性；需要小说去 AI 时优先配合 `novel-humanizer`，需要强化指定题材风格时再调用 `novel-write-style`，需要市场/平台趋势时才调用 `deep-research`。
+description: 为中文长篇小说、连载网文、章节样稿、已有草稿续写提供一套完整的创作总控流程：分流新建/续写/救稿任务，维护 plan/ 与 memory/ 记忆系统，在写正文前先学习指定题材的文风笔触，再按节奏持续产出章节。适用于用户要求写小说、开书、搭大纲、出样章、分章节连载、继续写下一章、修大纲救稿、想让 AI 先学某个题材的文风再开写时。默认负责规划与连贯性；需要小说按题材去 AI、统一语感、压掉机器味时优先配合 novel-write-style，需要市场/平台趋势时才调用 deep-research。
 metadata:
   author: km1001
   version: "2.0.0"
   language: zh-CN
   category: creative-writing
   license: "MIT"
-  optional_skills: ["novel-humanizer", "novel-write-style", "deep-research"]
+  optional_skills: ["novel-write-style", "deep-research"]
   tags: "novel, fiction, creative-writing, chinese, 小说生成, 连载, 样章"
 ---
 
@@ -57,8 +57,7 @@ metadata:
 - 不为了“像小说”而牺牲原逻辑
 
 ### 4. 解耦处理
-- **小说去 AI** → 优先交给 `novel-humanizer`
-- **题材风格强化** → 必要时交给 `novel-write-style`
+- **按题材去 AI / 人味化润色 / 题材表达校准** → 优先交给 `novel-write-style`
 - **市场/平台趋势研究** → 只有用户明确需要时才调用 `deep-research`
 
 不要把“规划、生成、风格化、去 AI、市场调研”全部绑成强制前置步骤。
@@ -273,9 +272,8 @@ metadata:
 - 文学模式：`3500-5000`
 
 ### 输出前的处理
-- 默认做一轮轻量人味化润色
-- 如果 `novel-humanizer` 可用，优先调用它
-- 如果用户要求“更像某类小说”，再额外调用 `novel-write-style`
+- 默认做一轮轻量按题材去 AI 润色
+- 如果用户要求更自然、更像真人写的、或更像某类小说，优先调用 `novel-write-style`
 
 ## 阶段 5：保存与更新
 
@@ -352,17 +350,13 @@ metadata:
 
 ## 何时调用其他技能
 
-### 调用 `novel-humanizer`
+### 调用 `novel-write-style`
 在以下情况优先调用：
 - 章节已经写完，但机器味重
 - 用户说“更自然一点”“更像真人写的”
-- 文本本身已经符合题材，只差人味和小说感
-
-### 调用 `novel-write-style`
-在以下情况再调用：
 - 用户明确指定题材笔触
 - 用户说“更像悬疑文 / 校园文 / 仙侠文”
-- 需要强化某一类小说的语感
+- 需要按题材去 AI，同时把语感校准到对应类型
 
 ### 调用 `deep-research`
 仅在以下情况调用：
