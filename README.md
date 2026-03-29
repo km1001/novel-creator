@@ -1,4 +1,4 @@
-<div align="center">
+﻿<div align="center">
 
 # 🎭 novel-creator 2.0
 
@@ -26,7 +26,7 @@
 - **轻量主控 + 技能解耦**
   - `novel-creator` 负责规划、记忆、节奏与连贯性
   - `novel-humanizer` 负责按题材去 AI、统一小说语感、强化题材笔触
-  - `deep-research` 仅在需要市场/平台趋势时启用
+  - `novel-research` 仅在需要市场/平台趋势时启用
 
 - **更安全的初始化**
   - 支持 `minimal` / `full` 两种初始化模式
@@ -145,7 +145,7 @@ backup/
 
 - `novel-humanizer`
   - 按题材去 AI、人味化、对白修正、心理毛边、题材笔触校准
-- `deep-research`
+- `novel-research`
   - 仅在你要研究平台风向、爆款套路时使用
 
 ---

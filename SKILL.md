@@ -1,13 +1,13 @@
----
+﻿---
 name: novel-creator
-description: 为中文长篇小说、连载网文、章节样稿、已有草稿续写提供一套完整的创作总控流程：分流新建/续写/救稿任务，维护 plan/ 与 memory/ 记忆系统，在写正文前先学习指定题材的文风笔触，再按节奏持续产出章节。适用于用户要求写小说、开书、搭大纲、出样章、分章节连载、继续写下一章、修大纲救稿、想让 AI 先学某个题材的文风再开写时。默认负责规划与连贯性；需要小说按题材去 AI、统一语感、压掉机器味时优先配合 novel-humanizer，需要市场/平台趋势时才调用 deep-research。
+description: 为中文长篇小说、连载网文、章节样稿、已有草稿续写提供一套完整的创作总控流程：分流新建/续写/救稿任务，维护 plan/ 与 memory/ 记忆系统，在写正文前先学习指定题材的文风笔触，再按节奏持续产出章节。适用于用户要求写小说、开书、搭大纲、出样章、分章节连载、继续写下一章、修大纲救稿、想让 AI 先学某个题材的文风再开写时。默认负责规划与连贯性；需要小说按题材去 AI、统一语感、压掉机器味时优先配合 novel-humanizer，需要市场/平台趋势时才调用 novel-research。
 metadata:
   author: km1001
   version: "2.0.0"
   language: zh-CN
   category: creative-writing
   license: "MIT"
-  optional_skills: ["novel-humanizer", "deep-research"]
+  optional_skills: ["novel-humanizer", "novel-research"]
   tags: "novel, fiction, creative-writing, chinese, 小说生成, 连载, 样章"
 ---
 
@@ -58,7 +58,7 @@ metadata:
 
 ### 4. 解耦处理
 - **按题材去 AI / 人味化润色 / 题材表达校准** → 优先交给 `novel-humanizer`
-- **市场/平台趋势研究** → 只有用户明确需要时才调用 `deep-research`
+- **市场/平台趋势研究** → 只有用户明确需要时才调用 `novel-research`
 
 不要把“规划、生成、风格化、去 AI、市场调研”全部绑成强制前置步骤。
 
@@ -358,13 +358,13 @@ metadata:
 - 用户说“更像悬疑文 / 校园文 / 仙侠文”
 - 需要按题材去 AI，同时把语感校准到对应类型
 
-### 调用 `deep-research`
+### 调用 `novel-research`
 仅在以下情况调用：
 - 用户明确要“对标平台爆款”
 - 用户想研究当前流行套路
 - 需要题材市场趋势，而不是单纯写作
 
-不要把 `deep-research` 作为默认步骤。
+不要把 `novel-research` 作为默认步骤。
 
 ---
 
