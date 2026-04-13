@@ -1,5 +1,5 @@
 #!/bin/bash
-# Novel Creator 2.0 初始化脚本
+# novel-creator 3.0 初始化脚本
 # 支持 minimal / full 两种模式，并在 --clean 时先备份旧工作区。
 
 set -e
@@ -12,11 +12,8 @@ NC='\033[0m'
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 SKILL_DIR="$(dirname "$SCRIPT_DIR")"
-OUTPUT_DIR="$SKILL_DIR/output"
-MEMORY_DIR="$SKILL_DIR/memory"
-PLAN_DIR="$SKILL_DIR/plan"
-BACKUP_DIR="$SKILL_DIR/backup"
-MANIFEST_PATH="$SKILL_DIR/manifest.json"
+INIT_TEMPLATE_DIR="$SKILL_DIR/assets/init"
+TARGET_DIR="."
 
 usage() {
   cat << EOF
@@ -25,6 +22,7 @@ usage() {
 选项:
   --mode minimal|full   初始化模式，默认 full
   --clean               清理旧工作区（会先备份）
+  --target-dir PATH     指定工作区目录，默认当前目录
   -h, --help            显示帮助
 EOF
 }
@@ -33,6 +31,19 @@ write_markdown_file() {
   local path="$1"
   local content="$2"
   printf "%s\n" "$content" > "$path"
+}
+
+get_template_content() {
+  local template_name="$1"
+  local template_path="$INIT_TEMPLATE_DIR/$template_name"
+  local content
+
+  content="$(cat "$template_path")"
+  content="${content//\{\{NOVEL_NAME\}\}/$NOVEL_NAME}"
+  content="${content//\{\{MODE\}\}/$MODE}"
+  content="${content//\{\{CREATED_AT\}\}/$CREATED_AT}"
+
+  printf '%s' "$content"
 }
 
 backup_workspace() {
@@ -63,6 +74,10 @@ while [[ $# -gt 0 ]]; do
       CLEAN=true
       shift
       ;;
+    --target-dir)
+      TARGET_DIR="$2"
+      shift 2
+      ;;
     -h|--help)
       usage
       exit 0
@@ -85,6 +100,15 @@ while [[ $# -gt 0 ]]; do
   esac
 done
 
+mkdir -p "$TARGET_DIR"
+WORKSPACE_DIR="$(cd "$TARGET_DIR" && pwd)"
+OUTPUT_DIR="$WORKSPACE_DIR/output"
+MEMORY_DIR="$WORKSPACE_DIR/memory"
+PLAN_DIR="$WORKSPACE_DIR/plan"
+BACKUP_DIR="$WORKSPACE_DIR/backup"
+MANIFEST_PATH="$WORKSPACE_DIR/manifest.json"
+CREATED_AT="$(date +%Y-%m-%dT%H:%M:%S)"
+
 if [ -z "$NOVEL_NAME" ]; then
   echo -e "${RED}[错误]${NC} 请提供小说名称"
   usage
@@ -97,10 +121,11 @@ if [[ "$MODE" != "minimal" && "$MODE" != "full" ]]; then
 fi
 
 echo -e "${CYAN}═══════════════════════════════════════${NC}"
-echo -e "${CYAN}  Novel Creator 2.0 - 初始化工作区${NC}"
+echo -e "${CYAN}  novel-creator 3.0 - 初始化工作区${NC}"
 echo -e "${CYAN}═══════════════════════════════════════${NC}"
 echo -e "  小说名称: ${GREEN}《${NOVEL_NAME}》${NC}"
 echo -e "  初始化模式: ${GREEN}${MODE}${NC}"
+echo -e "  工作目录: ${GREEN}${WORKSPACE_DIR}${NC}"
 
 mkdir -p "$BACKUP_DIR"
 
@@ -118,113 +143,28 @@ echo -e "${CYAN}[步骤]${NC} 创建目录..."
 mkdir -p "$OUTPUT_DIR" "$MEMORY_DIR" "$PLAN_DIR"
 
 echo -e "${CYAN}[步骤]${NC} 初始化 plan ..."
-write_markdown_file "$PLAN_DIR/outline.md" "# 《${NOVEL_NAME}》大纲与规划
-
-- 类型：待补全
-- 模式：待补全
-- 全书目标：待补全"
-
-write_markdown_file "$PLAN_DIR/current_unit.md" "# 最小剧情单元档案 (CURRENT_UNIT)
-
-记录最近 3-5 章的具体推进、冲突与任务。
-
-## 核心任务
-- 目标：待补全
-- 涉及人物：待补全
-- 关键博弈点：待补全
-- 这个单元存在的意义：待补全
-
-## 章节精细推演
-| 章节 | 任务/计谋分解 | 这一章存在的意义 | 预期字数 | 关键细节/伏笔要求 |
-|---|---|---|---|---|
-
-## 单元 / 事件完成后的合理性复盘
-- 这个单元存在的意义是否真正完成：待复盘
-- 删掉本单元后，故事会不会更紧：待复盘
-- 人物行为是否前后一致：待复盘
-- 事件推进是否过巧：待复盘
-- 题材容错标准：纪实类文学严格检查；网络爽文允许小 bug，但不允许关键因果断裂"
-
-write_markdown_file "$PLAN_DIR/style_guide.md" "# 文风预热卡 (STYLE_GUIDE)
-
-- 题材：待确认
-- 叙事温度：待提炼
-- 句式节奏：待提炼
-- 对白习惯：待提炼
-- 常用意象/词汇场：待提炼
-- 禁忌写法：待提炼
-- 去 AI 注意点：待提炼
-- 本书专属偏好：待提炼"
+write_markdown_file "$PLAN_DIR/outline.md" "$(get_template_content "outline.md")"
+write_markdown_file "$PLAN_DIR/current_unit.md" "$(get_template_content "current_unit.md")"
+write_markdown_file "$PLAN_DIR/style_guide.md" "$(get_template_content "style_guide.md")"
 
 if [ "$MODE" = "full" ]; then
-  write_markdown_file "$PLAN_DIR/current_arc.md" "# 当前大单元剧集/阶段档案 (CURRENT_ARC)
-
-记录当前卷/当前阶段的核心目标、势力、冲突与回收点。
-
-- 起止规划：待补全
-- 本篇章核心目标/作用：待补全
-- 这个篇章存在的意义：待补全
-- 发生地：待补全
-
-## 篇章完成后的合理性复盘
-- 是否完成了本篇章存在的意义：待复盘
-- 人物行为是否合理：待复盘
-- 因果链是否清楚：待复盘
-- 题材容错标准：纪实类文学原则上不允许明显 bug；网络爽文允许轻微便利性 bug，但不得伤及主线逻辑"
+  write_markdown_file "$PLAN_DIR/current_arc.md" "$(get_template_content "current_arc.md")"
 fi
 
 echo -e "${CYAN}[步骤]${NC} 初始化 memory ..."
-write_markdown_file "$MEMORY_DIR/roles.md" "# 角色档案 (ROLES)
-
-> 说明：现实题材至少记录【性别】；奇幻/科幻/异种题材额外记录【种族/物种】。如无特殊设定，可写“人类”。
-
-| 角色姓名 | 首次出场 | 性别 | 种族/物种 | 年龄/外表年龄 | 身份/阵营 | 当前等级/实力 | 核心性格/动机 | 标志性特征 | 状态 | 关键经历/近期目的 |
-|---|---|---|---|---|---|---|---|---|---|---|"
-
-write_markdown_file "$MEMORY_DIR/plot_points.md" "# 关键情节档案 (PLOT_POINTS)
-| 情节编号 | 关联章节 | 事件摘要 | 涉及关键角色 | 后续长远影响 | 状态 |
-|---|---|---|---|---|---|"
-
-write_markdown_file "$MEMORY_DIR/story_bible.md" "# 故事圣经 (STORY_BIBLE)
-
-## 1. 基础世界背景
-
-## 2. 力量/等级体系
-| 境界/级别 | 能力特征 | 寿命上限 | 突破难度与标志 |
-|---|---|---|---|
-
-## 3. 核心社会规则与禁忌"
+write_markdown_file "$MEMORY_DIR/roles.md" "$(get_template_content "roles.md")"
+write_markdown_file "$MEMORY_DIR/plot_points.md" "$(get_template_content "plot_points.md")"
+write_markdown_file "$MEMORY_DIR/story_bible.md" "$(get_template_content "story_bible.md")"
 
 if [ "$MODE" = "full" ]; then
-  write_markdown_file "$MEMORY_DIR/locations.md" "# 地点档案 (LOCATIONS)
-| 地点名称 | 首次出场 | 所属势力 | 环境/氛围特征 | 重要历史事件 | 状态 |
-|---|---|---|---|---|---|"
-
-  write_markdown_file "$MEMORY_DIR/errors.md" "# 穿帮与错误修正日志 (ERRORS)
-| 错误ID | 发生章节 | 严重性 | 穿帮/逻辑漏洞描述 | 影响与修正方案 | 状态 |
-|---|---|---|---|---|---|"
-
-  write_markdown_file "$MEMORY_DIR/foreshadowing.md" "# 伏笔与暗线管理 (FORESHADOWING)
-| 伏笔编号 | 埋设章节 | 抛出的线索/悬念表象 | 设计目的/暗线真相 | 计划回收节点 | 状态 |
-|---|---|---|---|---|---|"
-
-  write_markdown_file "$MEMORY_DIR/items.md" "# 物品与线索档案 (ITEMS)
-| 物品名称 | 获得章节 | 物品类型 | 特征效果与副作用 | 当前持有者 | 状态 | 流转与消耗记录 |
-|---|---|---|---|---|---|---|"
+  write_markdown_file "$MEMORY_DIR/locations.md" "$(get_template_content "locations.md")"
+  write_markdown_file "$MEMORY_DIR/errors.md" "$(get_template_content "errors.md")"
+  write_markdown_file "$MEMORY_DIR/foreshadowing.md" "$(get_template_content "foreshadowing.md")"
+  write_markdown_file "$MEMORY_DIR/items.md" "$(get_template_content "items.md")"
 fi
 
 touch "$OUTPUT_DIR/.gitkeep"
-
-cat > "$MANIFEST_PATH" << EOF
-{
-  "novel_name": "${NOVEL_NAME}",
-  "init_mode": "${MODE}",
-  "created_at": "$(date +%Y-%m-%dT%H:%M:%S)",
-  "current_chapter": 0,
-  "current_arc": "",
-  "status": "active"
-}
-EOF
+write_markdown_file "$MANIFEST_PATH" "$(get_template_content "manifest.json")"
 
 echo -e "\n${GREEN}[信息]${NC} 《${NOVEL_NAME}》工作区初始化完成！"
 echo "后续步骤:"
